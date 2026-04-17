@@ -1,46 +1,41 @@
-import { useState } from "preact/hooks";
-import type { JSXInternal } from "preact/src/jsx";
+import { useState } from "react";
 
 const SearchButton = () => {
-  const [value, setValue] = useState(
-    typeof window !== "undefined"
-      ? new URLSearchParams(window.location.search).get("q") ?? ""
-      : ""
-  );
-  
+    const [value, setValue] = useState(
+        typeof window !== "undefined"
+            ? new URLSearchParams(window.location.search).get("q") ?? ""
+            : ""
+    );
+    
+    // 追加
 
-  const handleChange: JSXInternal.GenericEventHandler<HTMLInputElement> = (
-    event
-  ) => {
-    setValue((event.target as HTMLInputElement).value);
-  };
-  
+    const handleChange = (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        setValue(event.target.value);
+    };
 
-  const handleSubmit: JSXInternal.GenericEventHandler<HTMLFormElement> = (
-    event
-  ) => {
-    event.preventDefault();
-    window.location.href = `/page/search?q=${value}`;
-  };
+    const handleSubmit = (
+        event: React.FormEvent<HTMLFormElement>
+    ) => {
+        event.preventDefault();
+        window.location.href = `/news/search?q=${value}`;
+    };
 
-  
-  return (
-    <form
-      role="search"
-      onSubmit={handleSubmit}
-    >
-      <label for="blog_search">
-        記事を検索　
-      </label>
-      <input
-        id="blog_search"
-        type="search"
-        value={value}
-        onChange={handleChange}
-      />
-      ：<button>検索</button>
-    </form>
-  );
+    return (
+        <form role="search" onSubmit={handleSubmit}>
+            <label htmlFor="blog_search">
+                記事を検索：
+            </label>
+            <input
+                id="blog_search"
+                type="search"
+                value={value}
+                onChange={handleChange}
+            />
+            ：<button>検索</button>
+        </form>
+    );
 };
 
 export default SearchButton;

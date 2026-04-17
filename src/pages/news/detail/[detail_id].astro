@@ -6,9 +6,13 @@ import Layout from '../../../layouts/Layout.astro';
 import Header from '../../../components/Header.astro';
 import Footer from '../../../components/Footer.astro';
 
+
+import { Image } from 'astro:assets'; // webp
+
 import { getKobashiNewsDetail } from '../../../library/micro';
 
 import { getKobashiNews } from '../../../library/micro'; //前後のページの為
+
 
 const { detail_id } = Astro.params;
 const Yamata_detaile = await getKobashiNewsDetail(detail_id as string)
@@ -35,8 +39,21 @@ const next = list.contents[index + 1] ?? null;
         <div>
             {Yamata_detaile.title}
         </div>
-        <div>
-            {Yamata_detaile.content}
+        
+        {Yamata_detaile.thumbnail && (
+        <figure>
+            <Image 
+            src={Yamata_detaile.thumbnail.url} 
+            alt={Yamata_detaile.title} 
+            width={700} 
+            inferSize={true}
+            fit="cover"
+            position="top"
+            />
+        </figure>
+        )}
+        
+        <div set:html={Yamata_detaile.content}>
         </div>
         
         <!-- 前後のページ -->
@@ -69,6 +86,21 @@ const next = list.contents[index + 1] ?? null;
 main {
   max-width: 800px;
   margin: 0 auto;
+}
+
+figure {
+    max-width: 700px;
+    margin: 0;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+figure img {
+    width: 100%;
+    height: auto;
+    padding: 0;
+    /* object-fit: cover;
+    object-position: center 0%; */
 }
     
 </style>

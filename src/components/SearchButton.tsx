@@ -1,35 +1,38 @@
-// src\components\SearchButton.tsx
-
-import { useState } from "preact/hooks";
-import type { JSX } from "preact";
+import { useState } from "react";
+import { useEffect } from "react";
 
 const SearchButton = () => {
-    const [value, setValue] = useState(
-        typeof window !== "undefined"
-            ? new URLSearchParams(window.location.search).get("q") ?? ""
-            : ""
-    );
+    
+    // const [value, setValue] = useState(
+    //     typeof window !== "undefined"
+    //         ? new URLSearchParams(window.location.search).get("q") ?? ""
+    //         : ""
+    // );
+    
+    // 検索後の文字残し 0416　▼
+    const [value, setValue] = useState("");
+    useEffect(() => {
+        const q = new URLSearchParams(window.location.search).get("q") ?? "";
+        setValue(q);
+    }, []);
+    // ここまで ▲
+    
 
     const handleChange = (
-        event: JSX.TargetedEvent<HTMLInputElement, Event>
+        event: React.ChangeEvent<HTMLInputElement>
     ) => {
-        setValue((event.target as HTMLInputElement).value);
+        setValue(event.target.value);
     };
 
     const handleSubmit = (
-        event: JSX.TargetedEvent<HTMLFormElement, Event>
+        event: React.FormEvent<HTMLFormElement>
     ) => {
         event.preventDefault();
         window.location.href = `/news/search?q=${value}`;
     };
 
-
     return (
-        <form
-            role="search"
-            onSubmit={handleSubmit}
-        >
-            {/* <label for="blog_search"> */}
+        <form role="search" onSubmit={handleSubmit}>
             <label htmlFor="blog_search">
                 記事を検索：
             </label>
