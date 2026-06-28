@@ -14,11 +14,7 @@ integrations: [react()], //検索機能,ハンバーガーメニュー
 //     mode: 'standalone'
 //   }),
 
-adapter: cloudflare({
-  platformProxy: {
-    enabled: false,
-  },
-}),
+  adapter: cloudflare(),
   
   devToolbar: {// 開発ツールバーを無効化
     enabled: false,
